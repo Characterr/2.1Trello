@@ -1,0 +1,32 @@
+$colorMainButton: #6f76db;
+$colorMainText: #fff;
+
+$colorButton: #9e9ea3;
+$colorText: #160f0f;
+
+$colorLink: transparent;
+
+$widthList: 15%;
+$colorBorder: 1px solid #000;
+$colorHover: #fadce3;
+$padingCard: 0 5px;
+$heightCard: 35px;
+$borderRadius: 3px;
+
+%card {
+  border-radius: $borderRadius;
+  border: $colorBorder;
+  height: $heightCard;
+  line-height: $heightCard;
+  padding: $padingCard;
+}
+
+%cardHover {
+  background-color: $colorHover;
+  cursor: pointer;
+}
+
+@mixin bgAndColor($bg, $color) {
+  background: $bg;
+  color: $color;
+}

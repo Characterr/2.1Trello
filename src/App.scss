@@ -1,10 +1,14 @@
+@import '../src/pages/Board/components/constants.scss';
 .App {
   text-align: center;
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 10vmin;
   pointer-events: none;
+  position: absolute;
+  right: -3vmin;
+  top: -1vmin;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -22,6 +26,11 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+
+  & .button {
+    background: $colorLink;
+    color: $colorText;
+  }
 }
 
 .App-link {

@@ -1,0 +1,25 @@
+@import '../constants.scss';
+
+.board {
+  padding: 5px 20px;
+}
+
+.homButtom {
+  position: absolute;
+  top: 10px;
+}
+
+.board-wrap {
+  overflow-x: auto;
+  display: flex;
+
+  & > .button {
+    text-wrap: nowrap;
+    min-width: $widthList;
+  }
+}
+
+h1 {
+  text-align: center;
+  margin: 0px 0 20px;
+}

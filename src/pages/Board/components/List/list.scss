@@ -1,0 +1,21 @@
+@import '../constants.scss';
+
+.list {
+  min-width: $widthList;
+  border: $colorBorder;
+  height: 400px;
+  background: #c4bbbb;
+  padding: 0 15px;
+  margin-right: 10px;
+  box-sizing: border-box;
+
+  & ul {
+    padding-inline-start: 0px;
+    margin: 0;
+  }
+
+  & .button {
+    @include bgAndColor($colorButton, $colorText);
+    width: 100%;
+  }
+}

@@ -1,0 +1,12 @@
+@import '../constants.scss';
+
+.card {
+  @extend %card;
+  @include bgAndColor($colorButton, $colorText);
+  list-style: none;
+  margin: 5px 0;
+
+  &:hover {
+    @extend %cardHover;
+  }
+}

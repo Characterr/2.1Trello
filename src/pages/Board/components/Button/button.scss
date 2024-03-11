@@ -1,0 +1,11 @@
+@import '../constants.scss';
+
+.button {
+  @extend %card;
+  @include bgAndColor($colorMainButton, colorMainText);
+  text-align: left;
+
+  &:hover {
+    @extend %cardHover;
+  }
+}
