@@ -35,6 +35,10 @@ function MyRoutes(): JSX.Element {
       Component: Main,
     },
     {
+      path: '/2.1Trello',
+      Component: Main,
+    },
+    {
       path: '/board',
       element: <Board />,
     },
