@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter, NavLink, useRoutes } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.scss';
+import { Home } from './pages/Home/Home';
 import { Board } from './pages/Board/components/Board/Board';
 import { Button } from './pages/Board/components/Button/Button';
 
@@ -31,7 +32,7 @@ function Main(): JSX.Element {
 function MyRoutes(): JSX.Element {
   const pages = useRoutes([
     {
-      path: '/',
+      path: '/main',
       Component: Main,
     },
     {
@@ -41,6 +42,10 @@ function MyRoutes(): JSX.Element {
     {
       path: '/board',
       element: <Board />,
+    },
+    {
+      path: '/',
+      Component: Home,
     },
   ]);
 
