@@ -1,11 +1,16 @@
-import React from 'react';
+/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-alert */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import React, { useState } from 'react';
 // eslint-disable-next-line object-curly-newline
-import { BrowserRouter, NavLink, useRoutes } from 'react-router-dom';
+import { BrowserRouter, NavLink, useParams, useRoutes } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.scss';
 import { Home } from './pages/Home/Home';
 import { Board } from './pages/Board/components/Board/Board';
 import { Button } from './pages/Board/components/Button/Button';
+import { Home2 } from './pages/Home/Home2';
 
 function Main(): JSX.Element {
   return (
@@ -40,16 +45,24 @@ function MyRoutes(): JSX.Element {
       Component: Main,
     },
     {
-      path: '/board',
+      path: '/board/:id',
       element: <Board />,
     },
     {
       path: '/',
-      Component: Home,
+      element: <Home />,
     },
   ]);
 
-  return <div>{pages}</div>;
+  return (
+    <div>
+      {pages}
+      <div>
+        {/*     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */}
+      </div>
+
+    </div>
+  );
 }
 
 function App(): JSX.Element {

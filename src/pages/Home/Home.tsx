@@ -1,3 +1,11 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable import/no-cycle */
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable no-alert */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable max-len */
 /* eslint-disable react/jsx-key */
 /* eslint-disable arrow-body-style */
 /* eslint-disable arrow-spacing */
@@ -5,7 +13,7 @@ import React, { useState } from 'react';
 import { Board } from './components/Board/Board';
 import './home.scss';
 
-export function Home(): JSX.Element {
+export function Home() :JSX.Element {
   const [boards] = useState([
     { id: 1, title: 'покупки', custom: { background: 'red' } },
     { id: 2, title: 'підготовка до весілля', custom: { background: 'green' } },
@@ -19,7 +27,7 @@ export function Home(): JSX.Element {
       <div className="boards">
         {boards.map((elem) => {
           return (
-            <Board key={elem.id} title={elem.title} background={elem.custom.background} />
+            <Board key={elem.id} id={elem.id.toString()} title={elem.title} background={elem.custom.background} />
           );
         })}
         <Board title=" + Створити дошку" background="lightgrey" />

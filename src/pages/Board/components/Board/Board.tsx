@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { List } from '../List/List';
 import './board.scss';
 import { Button } from '../Button/Button';
@@ -31,16 +31,20 @@ export function Board(): JSX.Element {
     },
   ]);
 
-  return (
+  const { id } = useParams();
 
+  return (
     <div className="board">
       <NavLink className="homButtom" to="/"><Button title="🏠 ⇦ Додому" /></NavLink>
-      <h1>{title}</h1>
+      <h1>
+        {title}
+        {id}
+
+      </h1>
       <div className="board-wrap">
         {lists.map((item) => <List key={item.id} title={item.title} cards={item.cards} />)}
         <Button title="+ Добавить список" />
       </div>
     </div>
-
   );
 }
