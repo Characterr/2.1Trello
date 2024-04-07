@@ -1,3 +1,7 @@
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable import/extensions */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable import/no-cycle */
 /* eslint-disable @typescript-eslint/ban-types */
@@ -9,28 +13,34 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable arrow-body-style */
 /* eslint-disable arrow-spacing */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Board } from './components/Board/Board';
 import './home.scss';
+import api from '../../api/request';
+import { CreateBoard } from './components/CreateBoard/CreateBoard';
 
 export function Home() :JSX.Element {
-  const [boards] = useState([
-    { id: 1, title: 'покупки', custom: { background: 'red' } },
-    { id: 2, title: 'підготовка до весілля', custom: { background: 'green' } },
-    { id: 3, title: 'розробка інтернет-магазину', custom: { background: 'blue' } },
-    { id: 4, title: 'курс по просуванню у соцмережах', custom: { background: 'grey' } },
-  ]);
+  const [boards, setBoards] = useState([]);
+
+  async function getBoards() {
+    const data:{ boards:[] } = await api.get('/board');
+    console.log(data.boards);
+    setBoards(data.boards);
+  }
+
+  useEffect(() => { getBoards(); }, []);
 
   return (
     <div>
       <h1>Мої дошки</h1>
       <div className="boards">
-        {boards.map((elem) => {
+        {boards.map((elem:any) => {
           return (
-            <Board key={elem.id} id={elem.id.toString()} title={elem.title} background={elem.custom.background} />
+            <Board fun={setBoards} key={elem.id} id={elem.id.toString()} title={elem.title} background={elem.custom.background} />
           );
         })}
-        <Board title=" + Створити дошку" background="lightgrey" />
+        <CreateBoard setBoards={setBoards} />
+
       </div>
     </div>
   );

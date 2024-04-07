@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-alert */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line object-curly-newline
 import { BrowserRouter, NavLink, useParams, useRoutes } from 'react-router-dom';
 import logo from './logo.svg';
@@ -10,7 +10,7 @@ import './App.scss';
 import { Home } from './pages/Home/Home';
 import { Board } from './pages/Board/components/Board/Board';
 import { Button } from './pages/Board/components/Button/Button';
-import { Home2 } from './pages/Home/Home2';
+import api from './api/request';
 
 function Main(): JSX.Element {
   return (
@@ -37,11 +37,11 @@ function Main(): JSX.Element {
 function MyRoutes(): JSX.Element {
   const pages = useRoutes([
     {
-      path: '/main',
+      path: '/2.1Trello',
       Component: Main,
     },
     {
-      path: '/2.1Trello',
+      path: '/main',
       Component: Main,
     },
     {
@@ -52,6 +52,11 @@ function MyRoutes(): JSX.Element {
       path: '/',
       element: <Home />,
     },
+    {
+      path: '/board',
+      element: <Board />,
+    },
+
   ]);
 
   return (
