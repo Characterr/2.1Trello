@@ -38,7 +38,7 @@ function MyRoutes(): JSX.Element {
   const pages = useRoutes([
     {
       path: '/2.1Trello',
-      Component: Main,
+      Component: Home,
     },
     {
       path: '/main',
@@ -62,10 +62,6 @@ function MyRoutes(): JSX.Element {
   return (
     <div>
       {pages}
-      <div>
-        {/*     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */}
-      </div>
-
     </div>
   );
 }
