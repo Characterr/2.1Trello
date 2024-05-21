@@ -59,7 +59,7 @@ export function Form(props: Board) :JSX.Element {
           }
         }}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' && DataVerification(e.currentTarget.value)) {
+          if (e.key === 'Enter') {
             submit(e);
             listener(e);
           }

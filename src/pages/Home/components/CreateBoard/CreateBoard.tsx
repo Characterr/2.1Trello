@@ -54,7 +54,7 @@ export function CreateBoard(props:any):JSX.Element {
         ? (
           <>
             <Button
-              boardOperation={():void => { setShowInput(!showInput); }}
+              buttonOnclick={():void => { setShowInput(!showInput); }}
               name="Сховати"
             />
             <Form boardOperation={boardOperation} method="post" title="" listener={() => {}} withButton withBlur={false} />
@@ -62,7 +62,7 @@ export function CreateBoard(props:any):JSX.Element {
         )
         : (
           <Button
-            boardOperation={():void => { setShowInput(!showInput); }}
+            buttonOnclick={():void => { setShowInput(!showInput); }}
             name="+ Створити дошку"
           />
         ) }

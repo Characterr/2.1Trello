@@ -72,17 +72,16 @@ export function Board(prop:BoardHomeProps, children: any): JSX.Element {
   };
 
   return (
-  //  <NavLink to={`board/${id}`}>
-    <div
-      className="home-board"
-      style={{ backgroundColor: background }}
-    >
-      <Button boardOperation={() => { boardOperation('delete'); }} name="x" />
-      {(state.showEdit && !isCreateBord)
-        ? <h3 onClick={() => { setState({ ...state, showEdit: false }); }}>{title}</h3>
-        : <Form title={title} boardOperation={boardOperation} method="put" listener={togleShowInput} withButton={false} withBlur />}
+    <NavLink to={`board/${id}`}>
+      <div
+        className="home-board"
+        style={{ backgroundColor: background }}
+      >
+        <Button buttonOnclick={() => { boardOperation('delete'); }} name="x" />
+        {!isCreateBord ? <h3 onClick={() => { setState({ ...state, showEdit: false }); }}>{title}</h3>
+          : <Form title={title} boardOperation={boardOperation} method="put" listener={togleShowInput} withButton={false} withBlur />}
 
-    </div>
-  // </NavLink>
+      </div>
+    </NavLink>
   );
 }

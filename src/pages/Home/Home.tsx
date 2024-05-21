@@ -1,3 +1,5 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/void-dom-elements-no-children */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
@@ -18,13 +20,14 @@ import { Board } from './components/Board/Board';
 import './home.scss';
 import api from '../../api/request';
 import { CreateBoard } from './components/CreateBoard/CreateBoard';
+import { Menu } from './components/Menu/Menu';
 
 export function Home() :JSX.Element {
   const [boards, setBoards] = useState([]);
 
   async function getBoards() {
     const data:{ boards:[] } = await api.get('/board');
-    console.log(data.boards);
+    // console.log(data.boards);
     setBoards(data.boards);
   }
 
@@ -32,7 +35,10 @@ export function Home() :JSX.Element {
 
   return (
     <div>
-      <h1>Мої дошки</h1>
+      <Menu />
+      <h1>
+        Мої дошки
+      </h1>
       <div className="boards">
         {boards.map((elem:any) => {
           return (

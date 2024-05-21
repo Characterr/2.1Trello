@@ -9,15 +9,16 @@ import logo from './logo.svg';
 import './App.scss';
 import { Home } from './pages/Home/Home';
 import { Board } from './pages/Board/components/Board/Board';
-import { Button } from './pages/Board/components/Button/Button';
 import api from './api/request';
+import { Button } from './pages/Home/components/Board/Input/Button';
+import { Card } from './pages/Board/components/Card/Card';
 
 function Main(): JSX.Element {
   return (
     <div className="App">
       <header className="App-header">
         <NavLink to="/board">
-          <Button title="to board" />
+          <Button name="to board" />
         </NavLink>
 
         <img src={logo} className="App-logo" alt="logo" />
@@ -41,22 +42,21 @@ function MyRoutes(): JSX.Element {
       Component: Home,
     },
     {
-      path: '/main',
+      path: '2.1Trello/main',
       Component: Main,
     },
     {
-      path: '/board/:id',
+      path: '2.1Trello/board/:id',
       element: <Board />,
     },
     {
-      path: '/',
+      path: '2.1Trello/',
       element: <Home />,
     },
     {
-      path: '/board',
+      path: '2.1Trello/board',
       element: <Board />,
     },
-
   ]);
 
   return (
