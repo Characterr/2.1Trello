@@ -7,46 +7,15 @@
 /* eslint-disable react/react-in-jsx-scope */
 
 import { useState } from 'react';
-import { Button } from '../Board/Input/Button';
+import { Button } from '../../../../common/components/Button';
 import { Form } from '../Board/Input/Form';
 import api from '../../../../api/request';
+import { requests } from '../../../../api/requests';
 
 /* eslint-disable max-len */
 export function CreateBoard(props:any):JSX.Element {
-  const { setBoards } = props;
+  const { updateBoards } = props;
   const [showInput, setShowInput] = useState(false);
-
-  async function boardOperation(operation:string, obj?:{ title: string, custom: any }, id?:number) {
-    let url; let makeRequest;
-
-    switch (operation) {
-      case 'delete': {
-        url = `/board/${id}`;
-        makeRequest = api.delete;
-        break;
-      }
-      case 'post': {
-        makeRequest = api.post;
-        url = '/board';
-        break;
-      }
-      case 'put': {
-        makeRequest = api.put;
-        url = `/board/${id}`;
-        break;
-      }
-      default: {
-        makeRequest = api.get;
-        url = '/board';
-      }
-    }
-
-    (async function () {
-      await makeRequest(url, obj);
-      const data:{ boards:[] } = await api.get('/board');
-      props.setBoards(data.boards);
-    }());
-  }
 
   return (
     <div style={{ backgroundColor: '#673' }} className="home-board">
@@ -57,7 +26,7 @@ export function CreateBoard(props:any):JSX.Element {
               buttonOnclick={():void => { setShowInput(!showInput); }}
               name="Сховати"
             />
-            <Form boardOperation={boardOperation} method="post" title="" listener={() => {}} withButton withBlur={false} />
+            <Form updateBoards={updateBoards} title="" listener={() => {}} withButton withBlur={false} />
           </>
         )
         : (

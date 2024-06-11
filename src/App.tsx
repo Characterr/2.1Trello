@@ -10,53 +10,21 @@ import './App.scss';
 import { Home } from './pages/Home/Home';
 import { Board } from './pages/Board/components/Board/Board';
 import api from './api/request';
-import { Button } from './pages/Home/components/Board/Input/Button';
+import { Button } from './common/components/Button';
 import { Card } from './pages/Board/components/Card/Card';
-
-function Main(): JSX.Element {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <NavLink to="/board">
-          <Button name="to board" />
-        </NavLink>
-
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit
-          <code>src/App.tsx</code>
-          and save to reload.
-        </p>
-        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
 
 function MyRoutes(): JSX.Element {
   const pages = useRoutes([
     {
-      path: '/2.1Trello',
+      path: '/',
       Component: Home,
     },
+
     {
-      path: '2.1Trello/main',
-      Component: Main,
-    },
-    {
-      path: '2.1Trello/board/:id',
+      path: '/board/:id',
       element: <Board />,
     },
-    {
-      path: '2.1Trello/',
-      element: <Home />,
-    },
-    {
-      path: '2.1Trello/board',
-      element: <Board />,
-    },
+
   ]);
 
   return (

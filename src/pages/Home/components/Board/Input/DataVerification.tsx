@@ -9,7 +9,7 @@ function getInvalidCharacters(value:string):string[] {
     alert('Поле вводу пусте');
 
     return [''];
-  } const reg = new RegExp(/^[0-9,a,—,.,_,\s,]/i);
+  } const reg = new RegExp(/^[0-9,a-z,—,.,_,\s,]/i);
   return value.split('').filter((char) => char.search(reg) !== 0);
 }
 

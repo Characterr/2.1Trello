@@ -21,17 +21,25 @@ import './home.scss';
 import api from '../../api/request';
 import { CreateBoard } from './components/CreateBoard/CreateBoard';
 import { Menu } from './components/Menu/Menu';
+import { requests } from '../../api/requests';
 
 export function Home() :JSX.Element {
   const [boards, setBoards] = useState([]);
 
-  async function getBoards() {
-    const data:{ boards:[] } = await api.get('/board');
-    // console.log(data.boards);
+  // async function getBoards() {
+  //   const data:{ boards:[] } = await api.get('/board');
+  //   // console.log(data.boards);
+  //   setBoards(data.boards);
+  // }
+
+  const getBoards = requests('getBoards');
+  async function updateBoards() {
+    const data:any = await getBoards();
+
     setBoards(data.boards);
   }
 
-  useEffect(() => { getBoards(); }, []);
+  useEffect(() => { updateBoards(); }, []);
 
   return (
     <div>
@@ -42,10 +50,10 @@ export function Home() :JSX.Element {
       <div className="boards">
         {boards.map((elem:any) => {
           return (
-            <Board fun={setBoards} key={elem.id} id={elem.id.toString()} title={elem.title} background={elem.custom.background} />
+            <Board fun={updateBoards} key={elem.id} id={elem.id.toString()} title={elem.title} background={elem.custom.background} />
           );
         })}
-        <CreateBoard setBoards={setBoards} />
+        <CreateBoard updateBoards={updateBoards} />
 
       </div>
     </div>

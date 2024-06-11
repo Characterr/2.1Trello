@@ -8,41 +8,46 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import React, { useState } from 'react';
 import { DataVerification } from './DataVerification';
+import { requests } from '../../../../../api/requests';
 
 interface Board {
   title:string
-  boardOperation:(title:string, obj?:{ title: string, custom: any })=>void
-  method: string
   listener:(e:any)=>void
   withButton:boolean
   withBlur:boolean
+  updateBoards:()=>void
 }
 
 export function Form(props: Board) :JSX.Element {
   const {
-    boardOperation, method, title, listener, withButton, withBlur,
+    title, listener, withButton, withBlur, updateBoards,
   } = props;
 
-  const [state, setState] = useState({ title, isError: false });
+  const [state, setState] = useState({ title, isError: false, bg: null });
 
-  function submit(event:any) {
+  const createBoard = requests('createBoard');
+  async function submit(event:any) {
     if (state.isError) return;
     const addData = {
       title: state.title,
       custom: {
         description: 'desc',
-        background: 'red',
+        background: state.bg,
       },
     };
 
     if (DataVerification(state.title)) {
-      boardOperation(method, addData);
-      setState({ ...state, title: '' });
+      (async () => {
+        await createBoard({ transferredObj: addData });
+        updateBoards();
+        setState({ ...state, title: '' });
+      })();
     }
     event.preventDefault();
   }
 
-  const handleChange = (e:any) => setState({ ...state, title: e.currentTarget.value });
+  const changeBordTitle = (e:any) => setState({ ...state, title: e.currentTarget.value });
+  const changeBordBg = (e:any) => setState({ ...state, bg: e.currentTarget.value });
 
   return (
     <form onSubmit={(e) => { submit(e); }}>
@@ -50,7 +55,7 @@ export function Form(props: Board) :JSX.Element {
         placeholder="Введіть назву дошки"
         value={state.title}
         type="text"
-        onChange={(e) => { handleChange(e); }}
+        onChange={(e) => { changeBordTitle(e); }}
 
         onBlur={(e) => {
           if (withBlur) {
@@ -65,6 +70,9 @@ export function Form(props: Board) :JSX.Element {
           }
         }}
       />
+      <br />
+      <input type="color" onInput={(e) => { changeBordBg(e); }} />
+      <hr />
       { withButton ? <input type="submit" value="Створити" /> : null}
     </form>
   );

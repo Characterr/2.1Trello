@@ -14,65 +14,55 @@ import './board.scss';
 import api from '../../../../api/request';
 import { Menu } from '../../../Home/components/Menu/Menu';
 import { Home } from '../../../Home/Home';
-import { Button } from '../../../Home/components/Board/Input/Button';
+import { Button } from '../../../../common/components/Button';
 import { Redact2 } from '../Card/RedactTitle';
 import { requests } from '../../../../api/requests';
 
 export function Board(): JSX.Element {
   const { id } = useParams();
-
   const [lists, setLists] = useState([]);
   const [title, setTitle] = useState('Моя тестова дошка');
   const [bgBoard, setBgBoard] = useState();
 
+  const getBoard = requests('getBoard');
   const getLists = async () => {
-    const url = `/board/${id}`;
-    const makeRequest = api.get;
+    let boardData:any = await getBoard({ boardId: id });
 
-    await makeRequest(url);
-    // const data:{ boards:[] } = await api.get('/board');
-    let boardData :{ lists:[], title:string } = await api.get(url);
-    // console.log(boardData.lists);
     setLists(boardData.lists);
-    // console.log(lists);
     setTitle(boardData.title);
   };
 
-  // const getBoard = requests('getBoard');
-  // const getLists = async () => {
-  //   let boardData:{ lists:[], title:string } = await getBoard({ boardId: id });
-
-  //   setLists(boardData.lists);
-  //   setTitle(boardData.title);
-  // };
-
   useEffect(() => { getLists(); }, []);
-  let url = `board/${id}/list`;
 
+  const createList = requests('createList');
   function addList() {
-    (async () => {
-      await api.post(url, {
-        title: 'карточка6',
-        position: 3,
-      });
-      getLists();
-    })();
+    let obj = {
+      title: 'карточка6',
+      position: 3,
+    };
+    createList({ boardId: id, transferredObj: obj });
+    getLists();
   }
 
+  const deleteList = requests('deleteList');
   function removeList(listId:any) {
-    (async () => {
-      await api.delete(`/board/${id}/list/${listId}`);
-    })();
+    deleteList({ boardId: id, listId });
+    getLists();
   }
 
   function backgroundСhange() {
-    // setBgBoard('red');
+    setBgBoard('red' as unknown as undefined);
   }
 
-  function t(e:any) {
+  function setBackgroundColor(e:any) {
     console.log(e.target.value);
 
     setBgBoard(e.target.value);
+  }
+
+  function deleteBoard() {
+    requests('deleteBoard')({ boardId: id });
+    getLists();
   }
 
   return (
@@ -82,7 +72,7 @@ export function Board(): JSX.Element {
         <div className="board" style={{ background: bgBoard }}>
 
           <Button buttonOnclick={backgroundСhange} classButton="button" name="редакт board" />
-          <input type="color" defaultValue={bgBoard} onInput={t} />
+          <input type="color" defaultValue={bgBoard} onInput={setBackgroundColor} />
 
           <div>{bgBoard}</div>
           <NavLink className="homButtom" to="/"><Button name="🏠 ⇦ Додому" /></NavLink>
@@ -98,6 +88,8 @@ export function Board(): JSX.Element {
             {lists.map((item:any) => <List key={item.id} listId={item.id} title={item.title} cards={item.cards} getLists={getLists} removeList={removeList} setTitle={setTitle} />)}
             <Button buttonOnclick={addList} classButton="button" name="+ Добавить список" />
           </div>
+
+          <Button buttonOnclick={deleteBoard} classButton="button" name="delete board" />
         </div>
       </div>
 

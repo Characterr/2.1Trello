@@ -16,7 +16,7 @@ import './board.scss';
 import { NavLink, useParams } from 'react-router-dom';
 import api from '../../../../api/request';
 import { Form } from './Input/Form';
-import { Button } from './Input/Button';
+import { Button } from '../../../../common/components/Button';
 
 interface BoardHomeProps {
   title?: string,
@@ -27,49 +27,7 @@ interface BoardHomeProps {
 }
 
 export function Board(prop:BoardHomeProps, children: any): JSX.Element {
-  const {
-    background, id, fun, isCreateBord,
-  } = prop;
-
-  let [state, setState] = useState({ title: prop.title || '', showEdit: true });
-  let { title } = state;
-
-  async function boardOperation(operation:string, obj?:{ title: string, custom: any }) {
-    let url; let makeRequest;
-
-    switch (operation) {
-      case 'delete': {
-        url = `/board/${id}`;
-        makeRequest = api.delete;
-        break;
-      }
-      case 'post': {
-        makeRequest = api.post;
-        url = '/board';
-        break;
-      }
-      case 'put': {
-        makeRequest = api.put;
-        url = `/board/${id}`;
-        break;
-      }
-      default: {
-        makeRequest = api.get;
-        url = '/board';
-      }
-    }
-
-    (async function () {
-      await makeRequest(url, obj);
-      const data:{ boards:[] } = await api.get('/board');
-      prop.fun(data.boards);
-    }());
-  }
-
-  const togleShowInput = (e:any) => {
-    let { value } = e.currentTarget;
-    setState({ ...state, showEdit: true, title: value });
-  };
+  const { background, id } = prop;
 
   return (
     <NavLink to={`board/${id}`}>
@@ -77,9 +35,7 @@ export function Board(prop:BoardHomeProps, children: any): JSX.Element {
         className="home-board"
         style={{ backgroundColor: background }}
       >
-        <Button buttonOnclick={() => { boardOperation('delete'); }} name="x" />
-        {!isCreateBord ? <h3 onClick={() => { setState({ ...state, showEdit: false }); }}>{title}</h3>
-          : <Form title={title} boardOperation={boardOperation} method="put" listener={togleShowInput} withButton={false} withBlur />}
+        <h3>{prop.title}</h3>
 
       </div>
     </NavLink>

@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import { ICard } from '../../../../common/interfaces/ICard';
 import './list.scss';
 import { Card } from '../Card/Card';
-import { Button } from '../../../Home/components/Board/Input/Button';
+import { Button } from '../../../../common/components/Button';
 import { useParams, useSearchParams } from 'react-router-dom';
 import api from '../../../../api/request';
 import { func } from 'prop-types';
@@ -25,55 +25,35 @@ export function List(props: any): JSX.Element {
   } = props;
   const [listTitle, setListTitle] = useState(title);
 
-  // const { lists, setLists } = useState(cards);
-  // console.log(lists);
-
+  const createCard = requests('createCard');
   function addCard() {
-    const url = `/board/${id}/card`;
-
-    (async () => {
-      await api.post(url, {
-        title: 'Нова_карта',
-        list_id: listId,
-        position: 5,
-        description: 'washing process',
-        custom: {
-          deadline: '2022-08-31 12:00',
-        },
-      });
-    })();
+    const obj = {
+      title: 'Нова_карта',
+      list_id: listId,
+      position: 5,
+      description: 'washing process',
+      custom: {
+        deadline: '2022-08-31 12:00',
+      },
+    };
+    createCard({ boardId: id, transferredObj: obj });
+    getLists();
   }
 
-  function deleteCard(idCard: any):void {
-    const url = `/board/${id}/card/${idCard}`;
-    (async () => {
-      await api.delete(url);
-    })();
-  }
-
-  // const t = requests();
-  // function deleteCard(idCard: any):void {
-  //   const url = `/board/${id}/card/${idCard}`;
-  //   // t();
-  // }
-
+  const redactList = requests('redactList');
   function redactComponent(newTitle: any):void {
-    const url = `/board/${id}/list/${id}`;
-
     const obj = {
       title: newTitle,
       position: 2,
     };
-
-    (async () => {
-      await api.put(url, obj);
-    })();
+    redactList({ boardId: id, listId, transferredObj: obj });
+    getLists();
   }
 
   return (
 
     <div className="list">
-      <Button buttonOnclick={() => { removeList(listId); getLists(); }} name="Видалити ліст" />
+      <Button buttonOnclick={() => { removeList(listId); }} name="Видалити ліст" />
       <Redact2 redactComponent={redactComponent} setTitle={setListTitle} title={listTitle}>
         <h2>
           {listTitle}
@@ -81,9 +61,9 @@ export function List(props: any): JSX.Element {
       </Redact2>
       {listId}
       <ul>
-        {cards.map((item:any) => <Card key={item.id} title={item.title} id={item.id} getLists={getLists} deleteCard={deleteCard} listId={listId} />)}
+        {cards.map((item:any) => <Card key={item.id} title={item.title} id={item.id} getLists={getLists} listId={listId} />)}
       </ul>
-      <Button buttonOnclick={() => { addCard(); getLists(); }} name="+ Додати карточку" />
+      <Button buttonOnclick={addCard} name="+ Додати карточку" />
     </div>
 
   );

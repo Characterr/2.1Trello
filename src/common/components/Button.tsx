@@ -6,6 +6,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable react/react-in-jsx-scope */
+import './button.scss';
 
 export function Button(props:any):JSX.Element {
   const { buttonOnclick, name, classButton } = props;

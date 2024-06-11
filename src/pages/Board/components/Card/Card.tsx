@@ -10,14 +10,14 @@ import React, { useEffect, useState } from 'react';
 import './card.scss';
 import { useParams } from 'react-router-dom';
 import api from '../../../../api/request';
-import { Button } from '../../../Home/components/Board/Input/Button';
+import { Button } from '../../../../common/components/Button';
 import { Form } from '../../../Home/components/Board/Input/Form';
 import { Redact2 } from './RedactTitle';
 import { requests } from '../../../../api/requests';
 
 export function Card(props :any) : JSX.Element {
   const {
-    id, getLists, listId, // deleteCard
+    id, getLists, listId,
   } = props;
 
   const [title, setTitle] = useState(props.title);
@@ -30,15 +30,6 @@ export function Card(props :any) : JSX.Element {
     list_id: listId,
   };
 
-  // function redactComponent(newTitle: any):void {
-  //   const url = `/board/${useParams}/card/${id}`;
-
-  //   console.log(url);
-  //   (async () => {
-  //     await api.put(url, obj);
-  //   })();
-  // }
-
   const redactComponent = (newTitle: any) => {
     obj.title = newTitle;
 
@@ -48,7 +39,12 @@ export function Card(props :any) : JSX.Element {
       transferredObj: obj,
     });
   };
+
   const deleteCard = requests('deleteCard');
+  const removeCard = () => {
+    deleteCard({ boardId: useParam.id, cardId: id });
+    getLists();
+  };
 
   return (
     <div>
@@ -62,7 +58,7 @@ export function Card(props :any) : JSX.Element {
         </li>
       </Redact2>
 
-      <Button buttonOnclick={() => { deleteCard({ boardId: useParam.id, cardId: id }); getLists(); }} classButton="button" name="Видалити" />
+      <Button buttonOnclick={removeCard} classButton="button" name="Видалити" />
 
     </div>
 

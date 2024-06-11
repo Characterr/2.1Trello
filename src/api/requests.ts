@@ -16,7 +16,8 @@
 
 import { Interface } from 'readline';
 import { number } from 'prop-types';
-import api from './request';
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
+// import api from './request';
 
 // export const getBoards = () => {
 //   (async function () {
@@ -118,6 +119,8 @@ import api from './request';
 //   })();
 // };
 
+import instance from './request';
+
 const r = {
   boardId: '',
   cardId: '',
@@ -127,25 +130,72 @@ const paramsMap = new Map([
   [
     'getBoards',
     {
-      method: api.get,
-      url: () => '/board/',
+      method: instance.get,
+      url: (): string => '/board/',
       properties: null,
     },
   ],
   [
     'getBoard',
     {
-      method: api.get,
-      url: () => `/board/${r.boardId}`,
+      method: instance.get,
+      url: (): string => `/board/${r.boardId}`,
       properties: null,
     },
   ],
-
+  [
+    'createBoard',
+    {
+      method: instance.post,
+      url: (): string => '/board/',
+      properties: null,
+    },
+  ],
+  [
+    'deleteBoard',
+    {
+      method: instance.delete,
+      url: (): string => `/board/${r.boardId}`,
+      properties: null,
+    },
+  ],
+  [
+    'createList',
+    {
+      method: instance.post,
+      url: (): string => `/board/${r.boardId}/list`,
+      properties: null,
+    },
+  ],
+  [
+    'deleteList',
+    {
+      method: instance.delete,
+      url: (): string => `/board/${r.boardId}/list/${r.listId}`,
+      properties: null,
+    },
+  ],
+  [
+    'redactList',
+    {
+      method: instance.put,
+      url: (): string => `/board/${r.boardId}/list/${r.listId}`,
+      properties: null,
+    },
+  ],
+  [
+    'createCard',
+    {
+      method: instance.post,
+      url: (): string => `/board/${r.boardId}/card`,
+      obj: null,
+    },
+  ],
   [
     'deleteCard',
     {
-      method: api.delete,
-      url: () => `/board/${r.boardId}/card/${r.cardId}`,
+      method: instance.delete,
+      url: (): string => `/board/${r.boardId}/card/${r.cardId}`,
       properties: [4],
       obj: {},
     },
@@ -153,24 +203,33 @@ const paramsMap = new Map([
   [
     'redactCard',
     {
-      method: api.put,
-      url: () => `/board/${r.boardId}/card/${r.cardId}`,
+      method: instance.put,
+      url: (): string => `/board/${r.boardId}/card/${r.cardId}`,
       properties: [4],
     },
   ],
 ]);
 
-export function requests(operation: string) {
+type RequestParams = {
+  boardId?: string;
+  cardId?: string;
+  listId?: string;
+  transferredObj?: unknown;
+};
+
+type AxiosGetMethod = <T, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig) => Promise<R>;
+
+export function requests(operation: string): <T>(obj?: RequestParams) => Promise<AxiosResponse<T>> {
   const params = paramsMap.get(operation);
-  let makeRequest: any;
-  let url: any;
+  let makeRequest: AxiosGetMethod;
+  let url: () => string;
 
   if (params && params.method) {
     makeRequest = params.method;
     url = params.url;
   }
 
-  const requestFun = async (obj?: any) => {
+  const requestFun = async <T>(obj?: RequestParams): Promise<AxiosResponse<T>> => {
     if (obj) {
       if (obj.boardId) r.boardId = obj.boardId;
       if (obj.cardId) r.cardId = obj.cardId;
@@ -180,9 +239,11 @@ export function requests(operation: string) {
     let res;
 
     if (obj && obj.transferredObj) {
-      return await makeRequest(url(), obj.transferredObj);
+      const result = await makeRequest<T>(url(), obj.transferredObj);
+      return result;
     }
-    return await makeRequest(url());
+    const result = await makeRequest<T>(url());
+    return result;
   };
 
   return requestFun;
