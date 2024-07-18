@@ -30,30 +30,30 @@ export function Card(props :any) : JSX.Element {
     list_id: listId,
   };
 
-  const redactComponent = (newTitle: any) => {
+  const redactTitleCard = async (newTitle: any) => {
     obj.title = newTitle;
 
-    requests('redactCard')({
+    await requests('redactCard')({
       boardId: `${useParam.id}`,
       cardId: id,
       transferredObj: obj,
     });
+    getLists();
   };
 
   const deleteCard = requests('deleteCard');
-  const removeCard = () => {
-    deleteCard({ boardId: useParam.id, cardId: id });
+  const removeCard = async () => {
+    await deleteCard({ boardId: useParam.id, cardId: id });
     getLists();
   };
 
   return (
     <div>
-      <Redact2 redactComponent={redactComponent} title={title} setTitle={setTitle}>
+      <Redact2 title={title} redactElement={redactTitleCard}>
         <li
           className="card"
         >
           {title}
-          {id}
 
         </li>
       </Redact2>

@@ -26,16 +26,16 @@ interface BoardHomeProps {
   isCreateBord?:boolean
 }
 
-export function Board(prop:BoardHomeProps, children: any): JSX.Element {
-  const { background, id } = prop;
+export function Board(prop:BoardHomeProps): JSX.Element {
+  const { background, id, title } = prop;
 
   return (
-    <NavLink to={`board/${id}`}>
+    <NavLink to={`board/${id}`} className="wrapHomeBoard">
       <div
         className="home-board"
         style={{ backgroundColor: background }}
       >
-        <h3>{prop.title}</h3>
+        <h3>{title}</h3>
 
       </div>
     </NavLink>

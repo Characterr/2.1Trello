@@ -40,6 +40,7 @@ export function Form(props: Board) :JSX.Element {
       (async () => {
         await createBoard({ transferredObj: addData });
         updateBoards();
+        // show placeholder
         setState({ ...state, title: '' });
       })();
     }

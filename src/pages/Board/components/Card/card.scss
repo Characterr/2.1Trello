@@ -5,6 +5,7 @@
   @include bgAndColor($colorButton, $colorText);
   list-style: none;
   margin: 5px 0;
+  overflow: hidden;
 
   &:hover {
     @extend %cardHover;

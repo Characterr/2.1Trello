@@ -16,7 +16,7 @@
 
 import { Interface } from 'readline';
 import { number } from 'prop-types';
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 // import api from './request';
 
 // export const getBoards = () => {
@@ -152,6 +152,14 @@ const paramsMap = new Map([
     },
   ],
   [
+    'redactBoard',
+    {
+      method: instance.put,
+      url: (): string => `/board/${r.boardId}`,
+      properties: null,
+    },
+  ],
+  [
     'deleteBoard',
     {
       method: instance.delete,
@@ -239,9 +247,30 @@ export function requests(operation: string): <T>(obj?: RequestParams) => Promise
     let res;
 
     if (obj && obj.transferredObj) {
-      const result = await makeRequest<T>(url(), obj.transferredObj);
+      let result;
+
+      if (operation === 'createBoard') {
+        console.log(operation);
+        result = await axios.post(url(), obj.transferredObj, {
+          onUploadProgress(axiosProgressEvent) {
+            /* {
+              loaded: number;
+              total?: number;
+              progress?: number; // in range [0..1]
+              bytes: number; // how many bytes have been transferred since the last trigger (delta)
+              estimated?: number; // estimated time in seconds
+              rate?: number; // upload speed in bytes
+              upload: true; // upload sign
+            } */
+            console.log(axiosProgressEvent.rate);
+          },
+        });
+      } else {
+        result = await makeRequest<T>(url(), obj.transferredObj);
+      }
       return result;
     }
+
     const result = await makeRequest<T>(url());
     return result;
   };

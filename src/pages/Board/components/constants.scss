@@ -16,7 +16,7 @@ $borderRadius: 3px;
 %card {
   border-radius: $borderRadius;
   border: $colorBorder;
-  height: $heightCard;
+  min-height: $heightCard;
   line-height: $heightCard;
   padding: $padingCard;
 }

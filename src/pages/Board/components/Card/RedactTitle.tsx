@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable react/jsx-props-no-multi-spaces */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable max-len */
@@ -11,11 +12,13 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Button } from '../../../../common/components/Button';
 
-export function Redact2(props: { children:any, redactComponent:any, title :any, setTitle:any }) {
+export function Redact2(props: { children:any, title :any, redactElement:any, buttonName?:string }) {
+  const { title, redactElement, buttonName } = props;
   const [isClick, setIsClick] = useState(false);
-  const { redactComponent, title, setTitle } = props;
+  let newTitle = title;
 
   const switchShowInput = (e:any):void => {
     e.target.onclick(setIsClick(!isClick));
@@ -23,16 +26,17 @@ export function Redact2(props: { children:any, redactComponent:any, title :any, 
 
   const clones = React.Children.map(props.children, (child) => React.cloneElement(child, { onClick: switchShowInput }));
 
-  function editSaveTitle(e:any) {
+  const editSaveTitle = (e:any) => {
+    newTitle = e.currentTarget.value;
+    if (buttonName && e.type !== 'keydown') return;
     setIsClick(!isClick);
-    redactComponent(e.currentTarget.value);
-    setTitle(e.currentTarget.value);
-  }
+    redactElement(e.currentTarget.value);
+  };
 
   function RedactTitle() {
     return (
       <input
-        defaultValue={title}
+        defaultValue={newTitle}
 
         onKeyDown={(e) => {
           if (e.code === 'Enter') { editSaveTitle(e); }
@@ -43,9 +47,26 @@ export function Redact2(props: { children:any, redactComponent:any, title :any, 
     );
   }
 
+  const toCreate = () => {
+    redactElement(newTitle);
+    setIsClick(!isClick);
+  };
+
+  const cancel = () => {
+    setIsClick(!isClick);
+  };
+
   return (
     <>
       {clones.map((clon:any, i:number) => (isClick ? <RedactTitle key={i} /> : clon))}
+      {isClick && buttonName
+      && (
+      <>
+        <br />
+        <Button buttonOnclick={toCreate} name={buttonName} classButton="" />
+        <Button buttonOnclick={cancel} name="Скасувати" classButton="" />
+      </>
+      )}
     </>
   );
 }

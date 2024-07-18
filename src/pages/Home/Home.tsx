@@ -26,12 +26,6 @@ import { requests } from '../../api/requests';
 export function Home() :JSX.Element {
   const [boards, setBoards] = useState([]);
 
-  // async function getBoards() {
-  //   const data:{ boards:[] } = await api.get('/board');
-  //   // console.log(data.boards);
-  //   setBoards(data.boards);
-  // }
-
   const getBoards = requests('getBoards');
   async function updateBoards() {
     const data:any = await getBoards();

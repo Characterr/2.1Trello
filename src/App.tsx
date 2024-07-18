@@ -28,7 +28,7 @@ function MyRoutes(): JSX.Element {
   ]);
 
   return (
-    <div>
+    <div className="main">
       {pages}
     </div>
   );

@@ -6,7 +6,7 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable import/order */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ICard } from '../../../../common/interfaces/ICard';
 import './list.scss';
 import { Card } from '../Card/Card';
@@ -23,12 +23,16 @@ export function List(props: any): JSX.Element {
   const {
     listId, cards, title, getLists, removeList, setTitle,
   } = props;
-  const [listTitle, setListTitle] = useState(title);
+  const [listTitle, setListTitle] = useState();
+
+  useEffect(() => {
+    setListTitle(title);
+  });
 
   const createCard = requests('createCard');
-  function addCard() {
+  async function addCard(newTitle:string) {
     const obj = {
-      title: 'Нова_карта',
+      title: newTitle,
       list_id: listId,
       position: 5,
       description: 'washing process',
@@ -36,34 +40,42 @@ export function List(props: any): JSX.Element {
         deadline: '2022-08-31 12:00',
       },
     };
-    createCard({ boardId: id, transferredObj: obj });
+    await createCard({ boardId: id, transferredObj: obj });
     getLists();
   }
 
   const redactList = requests('redactList');
-  function redactComponent(newTitle: any):void {
+  async function redactTitleList(newTitle: any) {
     const obj = {
       title: newTitle,
       position: 2,
     };
-    redactList({ boardId: id, listId, transferredObj: obj });
+    const res = await redactList({ boardId: id, listId, transferredObj: obj });
     getLists();
   }
+
+  const redactBoard = () => { };
 
   return (
 
     <div className="list">
       <Button buttonOnclick={() => { removeList(listId); }} name="Видалити ліст" />
-      <Redact2 redactComponent={redactComponent} setTitle={setListTitle} title={listTitle}>
+      <Redact2 title={listTitle} redactElement={redactTitleList}>
         <h2>
           {listTitle}
         </h2>
       </Redact2>
-      {listId}
       <ul>
         {cards.map((item:any) => <Card key={item.id} title={item.title} id={item.id} getLists={getLists} listId={listId} />)}
       </ul>
-      <Button buttonOnclick={addCard} name="+ Додати карточку" />
+
+      <div className="card">
+        <Redact2 title="Нова карточка " redactElement={addCard} buttonName="+ Додати карточку">
+          <div>+ Додати карточку</div>
+        </Redact2>
+      </div>
+
+      {/* <Button buttonOnclick={addCard} name="+ Додати карточку" /> */}
     </div>
 
   );
